@@ -1,0 +1,21 @@
+{
+    "name": "spinner toy",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "slider ext": "github:wecodemakecode/slider-ext#9bcee10235a8e980b2eed10643ba3926a783c31b",
+        "Polygon Ext 2": "github:wecodemakecode/polygon-ext#a3ba03d2f094edc882ad07884fb6a0b7ba7312fa"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj"
+}
