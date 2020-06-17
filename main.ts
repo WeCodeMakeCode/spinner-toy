@@ -2,36 +2,9 @@ namespace SpriteKind {
     export const none = SpriteKind.create()
     export const Spinner = SpriteKind.create()
 }
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    up()
+controller.down.onEvent(ControllerButtonEvent.Repeated, function () {
+    down()
 })
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (b_follow) {
-        b_follow = false
-        give_spinners_random_movement()
-    } else {
-        b_follow = true
-    }
-})
-controller.up.onEvent(ControllerButtonEvent.Repeated, function () {
-    up()
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    speedLimitSlider.selected = !(speedLimitSlider.selected)
-    if (speedLimitSlider) {
-        cover.z = -1
-    } else {
-        cover.z = 1
-    }
-})
-function up () {
-    if (speedLimitSlider.selected) {
-        speedLimitSlider.value = speedLimitSlider.value + 1
-        new_random_speeds()
-    } else {
-        launch_random_spinner(0)
-    }
-}
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(b_same_speed)) {
         for (let value of spinner_list) {
@@ -50,61 +23,88 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         b_clockwise = false
     }
 })
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+    down()
+})
+function up () {
+    if (speedLimitSlider.selected) {
+        speedLimitSlider.value = speedLimitSlider.value + 1
+        new_random_speeds()
+    } else {
+        launch_random_spinner(0)
+    }
+}
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (b_follow) {
+        b_follow = false
+        give_spinners_random_movement()
+    } else {
+        b_follow = true
+    }
+})
 function launch_random_spinner (radius: number) {
     if (radius == 0) {
-        rPolygon = polygon.createPolygon(randint(3, 6), randint(10, 60), randint(1, 14), 0)
+        rPolygon = polygon.createPolygon(Math.randomRange(3, 6), Math.randomRange(10, 60), Math.randomRange(1, 14), 0)
     } else {
-        rPolygon = polygon.createPolygon(randint(3, 6), radius, randint(1, 14), 0)
+        rPolygon = polygon.createPolygon(Math.randomRange(3, 6), radius, Math.randomRange(1, 14), 0)
     }
     rPolygon.sprite.z = 2
     rPolygon.sprite.setKind(SpriteKind.Spinner)
-    rSpinner = spinner.createSpinner(rPolygon, randint(0, speedLimitSlider.value), Direction.Random)
+    rSpinner = spinner.createSpinner(rPolygon, Math.randomRange(0, speedLimitSlider.value), Direction.Random)
     spinner_list.push(rSpinner)
 }
+function new_random_speeds () {
+    for (let value3 of spinner_list) {
+        value3.speed = Math.randomRange(0, speedLimitSlider.value)
+        value3.direction = Direction.Clockwise
+    }
+}
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    speedLimitSlider.selected = !(speedLimitSlider.selected)
+    if (speedLimitSlider.selected) {
+        cover.z = -1
+    } else {
+        cover.z = 1
+    }
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    for (let value2 of spinner_list) {
+        value2.polygon.color = Math.randomRange(1, 14)
+    }
+})
 sprites.onOverlap(SpriteKind.Spinner, SpriteKind.Spinner, function (sprite, otherSprite) {
     if (b_follow) {
         sprite.follow(otherSprite)
     }
 })
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    for (let value2 of spinner_list) {
-        value2.polygon.color = randint(1, 14)
-    }
-})
-function new_random_speeds () {
-    for (let value3 of spinner_list) {
-        value3.speed = randint(0, speedLimitSlider.value)
-        value3.direction = Direction.Clockwise
-    }
-}
-controller.down.onEvent(ControllerButtonEvent.Repeated, function () {
-    down()
-})
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    down()
+controller.up.onEvent(ControllerButtonEvent.Repeated, function () {
+    up()
 })
 function give_spinners_random_movement () {
     for (let value of spinner_list) {
-        value.polygon.sprite.x = randint(20, 140)
-        value.polygon.sprite.y = randint(20, 100)
-        value.polygon.sprite.vx = randint(0, 69)
-        value.polygon.sprite.vy = randint(0, 69)
-        value.polygon.sprite.ay = randint(0, 69)
-        value.polygon.sprite.ay = randint(0, 69)
+        value.polygon.sprite.x = Math.randomRange(20, 140)
+        value.polygon.sprite.y = Math.randomRange(20, 100)
+        value.polygon.sprite.vx = Math.randomRange(0, 69)
+        value.polygon.sprite.vy = Math.randomRange(0, 69)
+        value.polygon.sprite.ay = Math.randomRange(0, 69)
+        value.polygon.sprite.ay = Math.randomRange(0, 69)
         value.polygon.sprite.setFlag(SpriteFlag.BounceOnWall, true)
     }
 }
 function down () {
-    if (speedLimitSlider) {
+    if (speedLimitSlider.selected) {
         speedLimitSlider.value = speedLimitSlider.value - 1
         new_random_speeds()
     } else {
         if (spinner_list.length > 0) {
-            tmpSpinner = spinner_list.removeAt(randint(0, spinner_list.length - 1))
+            tmpSpinner = spinner_list.removeAt(Math.randomRange(0, spinner_list.length - 1))
             spinner.destroySpinner(tmpSpinner)
         }
     }
 }
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    up()
+})
 let tmpSpinner: spinner.Spinner = null
 let rSpinner: spinner.Spinner = null
 let rPolygon: Polygon = null
@@ -240,7 +240,7 @@ f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
 `, SpriteKind.none)
 cover.z = 1
-b_follow = true
+b_follow = false
 b_same_speed = false
 b_clockwise = false
 spinner_list = []
