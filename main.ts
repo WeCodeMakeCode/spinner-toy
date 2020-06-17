@@ -56,7 +56,7 @@ function launch_random_spinner (radius: number) {
 function new_random_speeds () {
     for (let value3 of spinner_list) {
         value3.speed = Math.randomRange(0, speedLimitSlider.value)
-        value3.direction = Direction.Clockwise
+        value3.direction = Direction.Random
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
